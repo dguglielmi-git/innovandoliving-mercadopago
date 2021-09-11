@@ -1,0 +1,22 @@
+{
+  "name": "lamsterdam-mp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "express-validator": "^6.11.1",
+    "mercadopago": "^1.5.8",
+    "mongoose": "^6.0.5",
+    "nodemailer": "^6.6.0",
+    "nodemon": "^2.0.12"
+  }
+}
