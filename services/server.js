@@ -1,6 +1,6 @@
+const cors = require("cors");
 const express = require("express");
 const { dbConnection } = require("./dbconfig");
-const cors = require("cors");
 
 class Server {
     constructor() {
@@ -8,7 +8,7 @@ class Server {
         this.port = process.env.PORT;
         this.mercadoPagoPath = "/api/mercadopago";
 
-        // this.connectDB();
+         this.connectDB();
         this.middlewares();
         this.routes();
     }
