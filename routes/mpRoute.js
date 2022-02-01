@@ -17,7 +17,8 @@ const {
     addChatMessageForProduct,
     replyMessageChat,
     chatMarkMessageAsRead,
-    getMessagesByProduct } = require("../controllers/chat");
+    getMessagesByProduct,
+    getOpenChats } = require("../controllers/chat");
 
 const router = Router();
 
@@ -28,6 +29,7 @@ router.get("/order/messages/:id", [fieldValidator], mercadoPagoGetMessagesByOrde
 router.get("/userowner/:id", [fieldValidator], checkUserOwner)
 router.get("/orderstatus", [fieldValidator], mercadoPagoGetOrderStatus);
 router.get("/chat/messages/:productId/:userId", [fieldValidator], getMessagesByProduct);
+router.get("/chat/open", [fieldValidator], getOpenChats);
 
 // [POST]
 router.post("/payment", [fieldValidator], mercadoPagoCheckout);

@@ -6,6 +6,7 @@ const IS_OWNER = 1;
 const IS_NORMAL_USER = 0;
 const BUSINESS_NAME = "InnovandoLiving";
 const ORDER_PROCESSED = 0;
+const ORDER_PENDING_PAYMENT = 12;
 const ORDER_FINISHED = 99;
 
 const URL_FAILURE_PAYMENT = "http://eqfam:3000/failurepay";
@@ -16,6 +17,7 @@ module.exports = {
     MSG_READ,
     MSG_UNREAD,
     ORDER_PROCESSED,
+    ORDER_PENDING_PAYMENT,
     ORDER_FINISHED,
     BUSINESS_NAME,
     IS_NORMAL_USER,

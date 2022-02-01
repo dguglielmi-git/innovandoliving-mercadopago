@@ -22,6 +22,10 @@ const OrderSchema = new Schema({
         msgread: Number,
         msgreadowner: Number,
     }],
+    paymentMethodSelected: String,
+    purchasePendingPayment: Schema.Types.Decimal128,
+    purchaseTotalReceived: Schema.Types.Decimal128,
+    purchaseTotalPendingPayment: Schema.Types.Decimal128,
     purchaseTotalAmount: Schema.Types.Decimal128,
     status: Number,
     status_history: [{

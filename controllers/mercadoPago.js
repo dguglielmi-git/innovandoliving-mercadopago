@@ -13,6 +13,7 @@ const {
     URL_PENDING_PAYMENT,
     URL_FAILURE_PAYMENT,
     URL_SUCCESSFUL_PAYMENT,
+    ORDER_PENDING_PAYMENT,
 } = require("../utils/constants");
 const {
     HTTP_UNAUTHORIZED,
@@ -20,7 +21,7 @@ const {
 } = require("../utils/httpCode");
 
 mercadopago.configure({
-    access_token: "APP_USR-4751668688491134-091522-e8ef3bd5e2dc07cd41183d8cd311df2c-825156262",
+    access_token: process.env.ACCESS_TOKEN,
 });
 
 const mercadoPagoCheckout = (req, res) => {
@@ -64,16 +65,25 @@ const mercadoPagoSaveOrder = async (req, res) => {
         const { id } = jwt.verify(token, process.env.SECRETJWTKEY)
         const order = new Order(req.body);
         order.userId = id;
-        order.status = ORDER_PROCESSED;
-        order.status_history = {
-            status: ORDER_PROCESSED,
+
+        if (order.paymentMethodSelected === 'creditcard') {
+            order.status = ORDER_PROCESSED;
+            order.status_history = {
+                status: ORDER_PROCESSED,
+            }
+        } else {
+            order.status = ORDER_PENDING_PAYMENT;
+            order.mercadoPagoMerchantOrderId = Math.random().toString(36).slice(3).toUpperCase();
+            order.status_history = {
+                status: ORDER_PENDING_PAYMENT,
+            }
         }
         await order.save()
+        return res.json(order);
     } catch (error) {
         console.log(error);
         return res.json({ "response": "Error when trying to save the Order. - errormsg: " + error })
     }
-    res.json({ "response": "Data received" })
 }
 
 const mercadoPagoUpdateOrder = async (req, res) => {
@@ -90,6 +100,8 @@ const mercadoPagoUpdateOrder = async (req, res) => {
             {
                 userId: id, paymentId: req.body.mercadoPagoPreferenceId
             }, {
+            purchaseTotalReceived: req.body.purchaseTotalReceived,
+            purchaseTotalPendingPayment: req.body.purchaseTotalPendingPayment,
             mercadoPagoStatus: req.body.mercadoPagoStatus,
             mercadoPagoPaymentId: req.body.mercadoPagoPaymentId,
             mercadoPagoPaymentType: req.body.mercadoPagoPaymentType,
