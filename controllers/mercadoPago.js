@@ -14,6 +14,7 @@ const {
     URL_FAILURE_PAYMENT,
     URL_SUCCESSFUL_PAYMENT,
     ORDER_PENDING_PAYMENT,
+    PAYMENT_METHOD_CREDIT_CARD,
 } = require("../utils/constants");
 const {
     HTTP_UNAUTHORIZED,
@@ -66,7 +67,7 @@ const mercadoPagoSaveOrder = async (req, res) => {
         const order = new Order(req.body);
         order.userId = id;
 
-        if (order.paymentMethodSelected === 'creditcard') {
+        if (order.paymentMethodSelected === PAYMENT_METHOD_CREDIT_CARD) {
             order.status = ORDER_PROCESSED;
             order.status_history = {
                 status: ORDER_PROCESSED,

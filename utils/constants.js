@@ -9,6 +9,8 @@ const ORDER_PROCESSED = 0;
 const ORDER_PENDING_PAYMENT = 12;
 const ORDER_FINISHED = 99;
 
+const PAYMENT_METHOD_CREDIT_CARD = 'creditcard';
+
 const URL_FAILURE_PAYMENT = "http://eqfam:3000/failurepay";
 const URL_PENDING_PAYMENT = "http://eqfam:3000/pendingpay";
 const URL_SUCCESSFUL_PAYMENT = "http://eqfam:3000/successfulPay";
@@ -25,4 +27,5 @@ module.exports = {
     URL_PENDING_PAYMENT,
     URL_FAILURE_PAYMENT,
     URL_SUCCESSFUL_PAYMENT,
+    PAYMENT_METHOD_CREDIT_CARD,
 }
