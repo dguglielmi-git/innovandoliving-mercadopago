@@ -1,5 +1,6 @@
 const Chat = require('../models/chat');
 const Owner = require("../models/owner");
+const Order = require("../models/order");
 const Product = require('../models/producto');
 const jwt = require("jsonwebtoken");
 const { HTTP_UNAUTHORIZED, HTTP_NOT_FOUND } = require('../utils/httpCode');
@@ -28,7 +29,6 @@ const getMessagesByProduct = async (req, res) => {
 }
 
 const getProduct = async (productId) => {
-
     const product = await Product.findOne({ _id: productId });
     if (product) {
         return product;
@@ -36,6 +36,50 @@ const getProduct = async (productId) => {
     return null;
 }
 
+const countClientUnreadMsg = (order) => order.reduce(
+    (sum, acum) => sum + (acum.messages.filter(msg => msg.msgread === 0).length), 0);
+
+const countOwnerUnreadMsg = (order) => order.reduce(
+    (sum, acum) => sum + (acum.messages.filter(msg => msg.msgreadowner === 0).length), 0);
+
+const getUnreadMsg = async (req, res) => {
+    const token = req.header('x-token');
+    if (!token) {
+        return res.status(HTTP_UNAUTHORIZED).json({
+            error: 'Request without token.'
+        })
+    }
+
+    const { id } = jwt.verify(token, process.env.SECRETJWTKEY);
+
+    try {
+        const owner = await Owner.findOne({}).where({ userOwnerId: id });
+        let whereQueries = (owner)
+            ? { unreadmsgs: { $gt: 0 } }
+            : { userId: id, clientUnreadMsg: { $gt: 0 } };
+
+        let whereOrders = (owner)
+            ? { status: { $ne: 99 } }
+            : { userId: id, status: { $ne: 99 } };
+
+        const queryCount = await Chat.find(whereQueries).count();
+        const orderCount = await Order.find(whereOrders);
+
+        const unreadMsgs = (owner)
+            ? countOwnerUnreadMsg(orderCount)
+            : countClientUnreadMsg(orderCount);
+
+        return res.json(
+            {
+                "queryCounter": queryCount || 0,
+                "ordersCounter": unreadMsgs || 0
+            });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(HTTP_UNAUTHORIZED).json({ "error": "Error getting Unread messages" + error })
+    }
+}
 
 const getOpenChats = async (req, res) => {
     const token = req.header('x-token');
@@ -263,4 +307,5 @@ module.exports = {
     getMessagesByProduct,
     closeChatForProduct,
     getOpenChats,
+    getUnreadMsg,
 }

@@ -67,18 +67,15 @@ const mercadoPagoSaveOrder = async (req, res) => {
         const order = new Order(req.body);
         order.userId = id;
 
-        if (order.paymentMethodSelected === PAYMENT_METHOD_CREDIT_CARD) {
-            order.status = ORDER_PROCESSED;
-            order.status_history = {
-                status: ORDER_PROCESSED,
-            }
-        } else {
-            order.status = ORDER_PENDING_PAYMENT;
-            order.mercadoPagoMerchantOrderId = Math.random().toString(36).slice(3).toUpperCase();
-            order.status_history = {
-                status: ORDER_PENDING_PAYMENT,
-            }
+        order.status = ORDER_PENDING_PAYMENT;
+        order.status_history = {
+            status: ORDER_PENDING_PAYMENT,
         }
+
+        if (order.paymentMethodSelected !== PAYMENT_METHOD_CREDIT_CARD) {
+            order.mercadoPagoMerchantOrderId = Math.random().toString(36).slice(3).toUpperCase();
+        }
+
         await order.save()
         return res.json(order);
     } catch (error) {
@@ -97,22 +94,27 @@ const mercadoPagoUpdateOrder = async (req, res) => {
 
     try {
         const { id } = jwt.verify(token, process.env.SECRETJWTKEY);
-        const order = Order.findOneAndUpdate(
-            {
-                userId: id, paymentId: req.body.mercadoPagoPreferenceId
-            }, {
-            purchaseTotalReceived: req.body.purchaseTotalReceived,
-            purchaseTotalPendingPayment: req.body.purchaseTotalPendingPayment,
-            mercadoPagoStatus: req.body.mercadoPagoStatus,
-            mercadoPagoPaymentId: req.body.mercadoPagoPaymentId,
-            mercadoPagoPaymentType: req.body.mercadoPagoPaymentType,
-            mercadoPagoMerchantOrderId: req.body.mercadoPagoMerchantOrderId,
-            mercadoPagoProcessingMode: req.body.mercadoPagoProcessingMode
-        }, { new: true }, function (err, task) {
-            if (err)
-                res.send(err);
-            res.json(task);
-        }).clone();
+        const order = await Order.findOne({}).where({ userId: id, paymentId: req.body.orderPreferenceId });
+
+        const mpType = req.body.mercadoPagoPaymentType;
+        const mpStatus = req.body.mercadoPagoStatus;
+        if (mpType === 'credit_card' && mpStatus === 'approved') {
+            if (order.creditPending > 0) {
+                order.creditReceived = parseFloat(order.creditPending);
+                order.creditPending = 0;
+            }
+
+            order.purchaseTotalReceived = (parseFloat(order.creditReceived) + parseFloat(order.cashReceived));
+            order.purchaseTotalPendingPayment = (parseFloat(order.creditPending) + parseFloat(order.cashPending));
+        }
+        order.mercadoPagoStatus = req.body.mercadoPagoStatus;
+        order.mercadoPagoPaymentId = req.body.mercadoPagoPaymentId;
+        order.mercadoPagoPaymentType = req.body.mercadoPagoPaymentType;
+        order.mercadoPagoMerchantOrderId = req.body.mercadoPagoMerchantOrderId;
+        order.mercadoPagoProcessingMode = req.body.mercadoPagoProcessingMode;
+        await order.save();
+
+        return res.json(order)
     }
     catch (error) {
         console.log(error);
