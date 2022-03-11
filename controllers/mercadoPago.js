@@ -54,6 +54,45 @@ const mercadoPagoCheckout = (req, res) => {
     }
 };
 
+const mercadoPagoRemoveOrder = async (req, res) => {
+    const token = req.header('x-token');
+    if (!token) {
+        return res.status(HTTP_UNAUTHORIZED).json({
+            error: 'Request without token.'
+        })
+    }
+
+    try {
+        const { id } = jwt.verify(token, process.env.SECRETJWTKEY);
+
+        const owner = await Owner.findOne({}).where({ userOwnerId: id });
+        if (!owner) {
+            return res.status(HTTP_UNAUTHORIZED).json({
+                "error": "Insufficient privileges."
+            })
+        }
+
+        const order = await Order.findOne({ paymentId: req.params.id });
+
+        if (order) {
+            await order.remove();
+            return res.json({
+                "result": "Order successfully removed."
+            })
+        }
+        return res.status(HTTP_NOT_FOUND).json({
+            "response": "Order ID Not Found or Insufficient Privileges."
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(HTTP_NOT_FOUND).json({
+            "error": error
+        })
+    }
+
+}
+
 const mercadoPagoSaveOrder = async (req, res) => {
     const token = req.header('x-token');
     if (!token) {
@@ -70,6 +109,7 @@ const mercadoPagoSaveOrder = async (req, res) => {
         order.status = ORDER_PENDING_PAYMENT;
         order.status_history = {
             status: ORDER_PENDING_PAYMENT,
+            modifiedBy: id,
         }
 
         if (order.paymentMethodSelected !== PAYMENT_METHOD_CREDIT_CARD) {
@@ -208,13 +248,81 @@ const mercadoPagoGetOrders = async (req, res) => {
 }
 
 const checkUserOwner = async (req, res) => {
-
     const owner = await Owner.findOne({}).where({ userOwnerId: req.params.id });
     if (owner) {
         return res.json({ result: true });
     } else {
         return res.json({ result: false })
     }
+}
+
+const mercadoPagoUpdatePendingBalance = async (req, res) => {
+    const token = req.header('x-token');
+    if (!token) {
+        return res.status(HTTP_UNAUTHORIZED).json({
+            error: 'Request without token.'
+        })
+    }
+
+    try {
+        const pendCash = req.body.pendingCash;
+        const pendOther = req.body.pendingOther;
+
+        const { id } = jwt.verify(token, process.env.SECRETJWTKEY);
+        const owner = await Owner.findOne({}).where({ userOwnerId: id });
+
+        if (owner) {
+            const order = await Order.findOne({ _id: req.body.orderId });
+            if (!!pendCash) {
+                order.cashReceived = parseFloat(order.cashPending);
+                order.cashPending = 0;
+            }
+            if (!!pendOther) {
+                order.creditReceived = parseFloat(order.creditPending);
+                order.creditPending = 0;
+            }
+            order.purchaseTotalReceived = (parseFloat(order.creditReceived) + parseFloat(order.cashReceived));
+            order.purchaseTotalPendingPayment = (parseFloat(order.creditPending) + parseFloat(order.cashPending));
+
+            if (parseFloat(order.purchaseTotalPendingPayment) === 0) {
+                const newStat = await updateStatus(order, id, ORDER_PROCESSED)
+                order.status = newStat.status;
+                order.history = newStat.status_history
+                if (newStat.dateClosed) {
+                    order.dateClosed = newStat.dateClosed;
+                }
+            }
+            await order.save();
+            return res.json(order);
+        }
+
+        return res.status(HTTP_UNAUTHORIZED).json({
+            error: 'Insufficient privileges.'
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(HTTP_NOT_FOUND).json({
+            "error": "Not found Pending Balance for the order"
+        })
+    }
+}
+
+const updateStatus = async (order, userId, newStatus) => {
+    const tempOrder = order;
+    const history = tempOrder.status_history;
+
+    history.push({
+        status: newStatus,
+        modifiedBy: userId,
+    })
+
+    tempOrder.status = newStatus;
+    tempOrder.status_history = history;
+    if (newStatus == ORDER_FINISHED) {
+        tempOrder.dateClosed = Date.now()
+    }
+
+    return tempOrder;
 }
 
 const mercadoPagoUpdateOrderStatus = async (req, res) => {
@@ -237,19 +345,9 @@ const mercadoPagoUpdateOrderStatus = async (req, res) => {
         const order = await Order.findOne({ _id: req.params.id }).where(whereCondition);
 
         if (order) {
-            const history = order.status_history;
-
-            history.push({
-                status: req.body.status,
-            })
-
-            order.status = req.body.status;
-            order.status_history = history;
-            if (req.body.status == ORDER_FINISHED) {
-                order.dateClosed = Date.now()
-            }
-            await order.save();
-            return res.json(order);
+            const updateOrder = await updateStatus(order, id, req.body.status);
+            await updateOrder.save();
+            return res.json(updateOrder);
         }
         return res.status(HTTP_NOT_FOUND).json({
             "response": "Order ID Not Found or Insufficient Privileges."
@@ -381,4 +479,6 @@ module.exports = {
     checkUserOwner,
     mercadoPagoUpdateOrderStatus,
     mercadoPagoGetOrderStatus,
+    mercadoPagoUpdatePendingBalance,
+    mercadoPagoRemoveOrder,
 };

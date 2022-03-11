@@ -43,6 +43,7 @@ const OrderSchema = new Schema({
             type: Date,
             default: Date.now,
         },
+        modifiedBy: Schema.Types.ObjectId,
     }],
     userId: String,
     paymentId: String,

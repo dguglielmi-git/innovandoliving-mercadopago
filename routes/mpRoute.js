@@ -12,6 +12,8 @@ const {
     checkUserOwner,
     mercadoPagoUpdateOrderStatus,
     mercadoPagoGetOrderStatus,
+    mercadoPagoUpdatePendingBalance,
+    mercadoPagoRemoveOrder,
 } = require("../controllers/mercadoPago");
 const {
     addChatMessageForProduct,
@@ -20,6 +22,7 @@ const {
     getMessagesByProduct,
     getOpenChats,
     getUnreadMsg } = require("../controllers/chat");
+const { newAuditRegister } = require("../controllers/audit");
 
 const router = Router();
 
@@ -38,6 +41,7 @@ router.post("/payment", [fieldValidator], mercadoPagoCheckout);
 router.post("/order", [fieldValidator], mercadoPagoSaveOrder);
 router.post("/order/message", [fieldValidator], mercadoPagoAddMessageToOrder);
 router.post("/chat", [fieldValidator], addChatMessageForProduct);
+router.post("/audit", [fieldValidator], newAuditRegister);
 
 // [PUT]
 router.put("/order", [fieldValidator], mercadoPagoUpdateOrder);
@@ -45,5 +49,9 @@ router.put("/order/message/read/:id", [fieldValidator], mercadoPagoMarkMessageAs
 router.put("/order/status/:id", [fieldValidator], mercadoPagoUpdateOrderStatus);
 router.put("/chat", [fieldValidator], replyMessageChat);
 router.put("/chat/message", [fieldValidator], chatMarkMessageAsRead)
+router.put("/order/balance/pending", [fieldValidator], mercadoPagoUpdatePendingBalance);
+
+// DELETE
+router.delete("/order/:id", [fieldValidator], mercadoPagoRemoveOrder);
 
 module.exports = router;

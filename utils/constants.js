@@ -11,10 +11,15 @@ const ORDER_FINISHED = 99;
 
 const PAYMENT_METHOD_CREDIT_CARD = 'creditcard';
 const PAYMENT_METHOD_MERCADOPAGO = 'mercadopago';
+// Development
+// const URL_FAILURE_PAYMENT = "http://eqfam:3000/failurepay";
+// const URL_PENDING_PAYMENT = "http://eqfam:3000/pendingpay";
+// const URL_SUCCESSFUL_PAYMENT = "http://eqfam:3000/successfulPay";
 
-const URL_FAILURE_PAYMENT = "http://eqfam:3000/failurepay";
-const URL_PENDING_PAYMENT = "http://eqfam:3000/pendingpay";
-const URL_SUCCESSFUL_PAYMENT = "http://eqfam:3000/successfulPay";
+// Production
+const URL_FAILURE_PAYMENT = "https://innovandoliving.com.ar/failurepay";
+const URL_PENDING_PAYMENT = "https://innovandolivigin.com.ar/pendingpay";
+const URL_SUCCESSFUL_PAYMENT = "https://innovandoliving.com.ar/successfulPay";
 
 module.exports = {
     MSG_READ,
