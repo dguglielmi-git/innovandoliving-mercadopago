@@ -17,7 +17,9 @@ It is required to have installed NodeJS. You can install it on heroku, docker, a
 
 After deploy in your selected system, you should define the values for the following environment variables:
 MONGODB_CNN="url of your mongodb database"
+
 ACCESS_TOKEN="Token from MercadoPago required for its connectivity"
+
 SECRETJWTKEY="Secret Json Web Token key"
 
 Below you will find some examples of the required format:
