@@ -50,6 +50,7 @@ const ERROR_RETRIEVING_MSGS_ORDER =
   "Error when trying to get messages from the Order, check order id and permissions.";
 const DB_CONNECTION_SUCCESSFULLY = "DB Connection succesfully.";
 const ERROR_CONNECTING_DB = "Error connecting to DB: ";
+const SERVER_LISTENING_ON_PORT = "Server listening on port ";
 
 // Production
 // const URL_FAILURE_PAYMENT = "https://innovandoliving.com.ar/failurepay";
@@ -96,4 +97,5 @@ module.exports = {
   ERROR_RETRIEVING_MSGS_ORDER,
   DB_CONNECTION_SUCCESSFULLY,
   ERROR_CONNECTING_DB,
+  SERVER_LISTENING_ON_PORT,
 };
