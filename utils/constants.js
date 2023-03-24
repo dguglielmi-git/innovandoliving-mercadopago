@@ -17,6 +17,8 @@ const URL_SUCCESSFUL_PAYMENT = "http://eqfam:3000/successfulPay";
 
 // Strings
 const REQUEST_WITHOUT_TOKEN = "Request without token.";
+const GENERIC_ERROR_MSG = "Something went wrong";
+const GENERIC_ERROR_DETAILED = "Something went wrong - error: ";
 const ERROR_ADDING_AUDIT_REGISTER =
   "Something went wrong when trying to add a new Audit register.";
 const CHAT_ID_NOT_FOUND = "Chat ID Not Found or Insufficient Privileges.";
@@ -27,8 +29,25 @@ const ERROR_ADDING_CHAT_MSG =
   "Error when trying to add a message to the Chat, check chat id and permissions.";
 const ERROR_GET_UNREAD_MSGS = "Error getting Unread messages";
 const ERROR_UPDATE_CHAT = "Error updating chat: ";
+const ERROR_UPDATE_ORDER = "Error updating order: ";
 const NOT_FOUND_VERIFY_PROD =
   "not found, verify the product sent and try again.";
+const NOT_ITEMS_RECEIVED = "No items received";
+const APPROVED_STATUS = "approved";
+const MERCADOPAGO_CREDIT_CARD = "credit_card";
+const INSUFFICIENT_PRIVILEGES = "Insufficient privileges.";
+const ORDER_SUCCESSFULLY_REMOVED = "Order successfully removed.";
+const ORDER_ID_NOT_FOUND = "Order ID Not Found or Insufficient Privileges.";
+const ERROR_SAVING_ORDER = "Error when trying to save the Order. - errormsg: ";
+const ERROR_UPDATING_ORDER =
+  "Error when trying to update the Order. - errormsg: ";
+const ORDER_WITHOUT_PENDING_BALANCE = "No Pending Balance for this order.";
+const ERROR_ADDING_STATUS_HISTORY =
+  "Error when trying to add a status to the History, check order id and permissions.";
+const ERROR_ADDING_MSG_ORDER =
+  "Error when trying to add a message to the Order, check order id and permissions.";
+const ERROR_RETRIEVING_MSGS_ORDER =
+  "Error when trying to get messages from the Order, check order id and permissions.";
 // Production
 // const URL_FAILURE_PAYMENT = "https://innovandoliving.com.ar/failurepay";
 // const URL_PENDING_PAYMENT = "https://innovandolivigin.com.ar/pendingpay";
@@ -57,4 +76,19 @@ module.exports = {
   CHAT_MSG_NOT_FOUND,
   ERROR_ADDING_CHAT_MSG,
   ERROR_UPDATE_CHAT,
+  NOT_ITEMS_RECEIVED,
+  APPROVED_STATUS,
+  INSUFFICIENT_PRIVILEGES,
+  ORDER_SUCCESSFULLY_REMOVED,
+  ORDER_ID_NOT_FOUND,
+  ERROR_SAVING_ORDER,
+  MERCADOPAGO_CREDIT_CARD,
+  ERROR_UPDATING_ORDER,
+  GENERIC_ERROR_MSG,
+  GENERIC_ERROR_DETAILED,
+  ORDER_WITHOUT_PENDING_BALANCE,
+  ERROR_ADDING_STATUS_HISTORY,
+  ERROR_ADDING_MSG_ORDER,
+  ERROR_UPDATE_ORDER,
+  ERROR_RETRIEVING_MSGS_ORDER,
 };
