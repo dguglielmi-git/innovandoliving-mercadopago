@@ -1,4 +1,3 @@
-
 // Move all these order's constant into the database
 const MSG_UNREAD = 0;
 const MSG_READ = 1;
@@ -9,12 +8,17 @@ const ORDER_PROCESSED = 0;
 const ORDER_PENDING_PAYMENT = 12;
 const ORDER_FINISHED = 99;
 
-const PAYMENT_METHOD_CREDIT_CARD = 'creditcard';
-const PAYMENT_METHOD_MERCADOPAGO = 'mercadopago';
+const PAYMENT_METHOD_CREDIT_CARD = "creditcard";
+const PAYMENT_METHOD_MERCADOPAGO = "mercadopago";
 // Development
 const URL_FAILURE_PAYMENT = "http://eqfam:3000/failurepay";
 const URL_PENDING_PAYMENT = "http://eqfam:3000/pendingpay";
 const URL_SUCCESSFUL_PAYMENT = "http://eqfam:3000/successfulPay";
+
+// Strings
+const REQUEST_WITHOUT_TOKEN = "Request without token.";
+const ERROR_ADDING_AUDIT_REGISTER =
+  "Something went wrong when trying to add a new Audit register.";
 
 // Production
 // const URL_FAILURE_PAYMENT = "https://innovandoliving.com.ar/failurepay";
@@ -22,17 +26,19 @@ const URL_SUCCESSFUL_PAYMENT = "http://eqfam:3000/successfulPay";
 // const URL_SUCCESSFUL_PAYMENT = "https://innovandoliving.com.ar/successfulPay";
 
 module.exports = {
-    MSG_READ,
-    MSG_UNREAD,
-    ORDER_PROCESSED,
-    ORDER_PENDING_PAYMENT,
-    ORDER_FINISHED,
-    BUSINESS_NAME,
-    IS_NORMAL_USER,
-    IS_OWNER,
-    URL_PENDING_PAYMENT,
-    URL_FAILURE_PAYMENT,
-    URL_SUCCESSFUL_PAYMENT,
-    PAYMENT_METHOD_CREDIT_CARD,
-    PAYMENT_METHOD_MERCADOPAGO,
-}
+  MSG_READ,
+  MSG_UNREAD,
+  ORDER_PROCESSED,
+  ORDER_PENDING_PAYMENT,
+  ORDER_FINISHED,
+  BUSINESS_NAME,
+  IS_NORMAL_USER,
+  IS_OWNER,
+  URL_PENDING_PAYMENT,
+  URL_FAILURE_PAYMENT,
+  URL_SUCCESSFUL_PAYMENT,
+  PAYMENT_METHOD_CREDIT_CARD,
+  PAYMENT_METHOD_MERCADOPAGO,
+  REQUEST_WITHOUT_TOKEN,
+  ERROR_ADDING_AUDIT_REGISTER,
+};
