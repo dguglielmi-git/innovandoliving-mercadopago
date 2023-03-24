@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-const { DB_CONNECTION_SUCCESSFULLY } = require("../utils/constants");
+const {
+  DB_CONNECTION_SUCCESSFULLY,
+  ERROR_CONNECTING_DB,
+} = require("../utils/constants");
 
 const dbConnection = async () => {
   try {
