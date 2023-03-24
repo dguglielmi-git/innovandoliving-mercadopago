@@ -48,6 +48,9 @@ const ERROR_ADDING_MSG_ORDER =
   "Error when trying to add a message to the Order, check order id and permissions.";
 const ERROR_RETRIEVING_MSGS_ORDER =
   "Error when trying to get messages from the Order, check order id and permissions.";
+const DB_CONNECTION_SUCCESSFULLY = "DB Connection succesfully.";
+const ERROR_CONNECTING_DB = "Error connecting to DB: ";
+
 // Production
 // const URL_FAILURE_PAYMENT = "https://innovandoliving.com.ar/failurepay";
 // const URL_PENDING_PAYMENT = "https://innovandolivigin.com.ar/pendingpay";
@@ -91,4 +94,6 @@ module.exports = {
   ERROR_ADDING_MSG_ORDER,
   ERROR_UPDATE_ORDER,
   ERROR_RETRIEVING_MSGS_ORDER,
+  DB_CONNECTION_SUCCESSFULLY,
+  ERROR_CONNECTING_DB,
 };
