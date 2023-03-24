@@ -19,7 +19,16 @@ const URL_SUCCESSFUL_PAYMENT = "http://eqfam:3000/successfulPay";
 const REQUEST_WITHOUT_TOKEN = "Request without token.";
 const ERROR_ADDING_AUDIT_REGISTER =
   "Something went wrong when trying to add a new Audit register.";
-
+const CHAT_ID_NOT_FOUND = "Chat ID Not Found or Insufficient Privileges.";
+const CHAT_MSG_NOT_FOUND = "Chat Msg Not Found or Insufficient Privileges.";
+const ERROR_RETRIEVING_MSGS =
+  "Error when trying to get messages for this chat, check chat id and permissions.";
+const ERROR_ADDING_CHAT_MSG =
+  "Error when trying to add a message to the Chat, check chat id and permissions.";
+const ERROR_GET_UNREAD_MSGS = "Error getting Unread messages";
+const ERROR_UPDATE_CHAT = "Error updating chat: ";
+const NOT_FOUND_VERIFY_PROD =
+  "not found, verify the product sent and try again.";
 // Production
 // const URL_FAILURE_PAYMENT = "https://innovandoliving.com.ar/failurepay";
 // const URL_PENDING_PAYMENT = "https://innovandolivigin.com.ar/pendingpay";
@@ -41,4 +50,11 @@ module.exports = {
   PAYMENT_METHOD_MERCADOPAGO,
   REQUEST_WITHOUT_TOKEN,
   ERROR_ADDING_AUDIT_REGISTER,
+  CHAT_ID_NOT_FOUND,
+  ERROR_RETRIEVING_MSGS,
+  ERROR_GET_UNREAD_MSGS,
+  NOT_FOUND_VERIFY_PROD,
+  CHAT_MSG_NOT_FOUND,
+  ERROR_ADDING_CHAT_MSG,
+  ERROR_UPDATE_CHAT,
 };
