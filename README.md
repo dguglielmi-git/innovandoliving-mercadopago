@@ -1,21 +1,21 @@
 
 # InnovandoLiving MercadoPago - (e-Commerce Backend)
 
-This microservice works as a payment gateway utilizing MercadoPago. All transactions ran through it will be registered into the system's database.
+This microservice functions as a payment gateway, using MercadoPago. All transactions processed through it will be registered in the system's database.
 
 
 ## Getting Started 🚀
 
-Regardless were you deploy this project, you must be able to set the environment variables that this microservice needs. Read the how to install steps in order to have this service online.
+No matter where you deploy this project, you must be able to set the environment variables required by this microservice. Please refer to the installation instructions to ensure that this service can be brought online.
 
 
 ### Pre-requisites 📋
 
-It is required to have installed NodeJS. You can install it on heroku, docker, aws or any other system that allows you to set environment variables.
+NodeJS must be installed in order to use this service. It can be installed on Heroku, Docker, AWS or any other system that allows for setting environment variables.
 
 ### How to Install 🔧
 
-After deploy in your selected system, you should define the values for the following environment variables:
+After deploying to your selected system, you will need to define the values for the following environment variables:
 MONGODB_CNN="url of your mongodb database"
 
 ACCESS_TOKEN="Token from MercadoPago required for its connectivity"
@@ -55,7 +55,7 @@ No license required.
 
 ## Thanks 🎁
 
-* To anyone who uses this project. 😇 
+* Thank you for utilizing my project, I sincerely appreciate your interest and hope it meets your needs. 😇 
 
 ---
 ⌨️ with ❤️ by [dguglielmi-git](https://github.com/dguglielmi-git) 😊
